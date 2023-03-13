@@ -1,16 +1,15 @@
+import PropTypes from 'prop-types';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageGalleryList } from './ImageGallery.styled';
 
-import PropTypes from 'prop-types';
-
-export const ImageGallery = ({ imageName }) => {
+export const ImageGallery = ({ images }) => {
   return (
     <ImageGalleryList>
-      <ImageGalleryItem images={imageName} />
+      <ImageGalleryItem images={images} />
     </ImageGalleryList>
   );
 };
 
 ImageGallery.propTypes = {
-  imageName: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
