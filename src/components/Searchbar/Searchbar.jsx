@@ -1,3 +1,7 @@
+import { MdImageSearch } from 'react-icons/md';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import {
   SearchbarHeader,
   SearchForm,
@@ -5,57 +9,43 @@ import {
   SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled';
-import { MdImageSearch } from 'react-icons/md';
-import { Component } from 'react';
-import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
 
-export class Searchbar extends Component {
-  state = {
-    imageName: '',
+export const Searchbar = ({ onSubmit }) => {
+  const [imageName, setImageName] = useState('');
+
+  const handleChange = event => {
+    setImageName(event.target.value.toLowerCase());
   };
 
-  handleChange = event => {
-    this.setState({ imageName: event.target.value.toLowerCase() });
-  };
-
-  hadleSubit = event => {
-    const { onSubmit } = this.props;
-    const { imageName } = this.state;
-
+  const hadleSubit = event => {
     event.preventDefault();
     if (imageName.trim() === '') {
       return toast.warn('Enter a name for the image');
     }
-
     onSubmit(imageName);
-    this.setState({ imageName: '' });
+    setImageName('');
   };
 
-  render() {
-    const { imageName } = this.state;
+  return (
+    <SearchbarHeader>
+      <SearchForm onSubmit={hadleSubit}>
+        <SearchFormButton type="submit">
+          <MdImageSearch />
+          <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+        </SearchFormButton>
 
-    return (
-      <SearchbarHeader>
-        <SearchForm onSubmit={this.hadleSubit}>
-          <SearchFormButton type="submit">
-            <MdImageSearch />
-            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
-          </SearchFormButton>
-
-          <SearchFormInput
-            type="text"
-            autocomplete="off"
-            autoFocus
-            placeholder="Search images and photos"
-            onChange={this.handleChange}
-            value={imageName}
-          />
-        </SearchForm>
-      </SearchbarHeader>
-    );
-  }
-}
+        <SearchFormInput
+          type="text"
+          autocomplete="off"
+          autoFocus
+          placeholder="Search images and photos"
+          onChange={handleChange}
+          value={imageName}
+        />
+      </SearchForm>
+    </SearchbarHeader>
+  );
+};
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
